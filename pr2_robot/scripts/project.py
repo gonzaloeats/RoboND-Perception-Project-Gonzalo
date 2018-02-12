@@ -69,12 +69,21 @@ def pcl_callback(pcl_msg):
     cloud_filtered.set_std_dev_mul_thresh(x)
     cloud_filtered = cloud_filtered.filter()
 
-    # TODO: PassThrough Filter
+    # TODO: PassThrough Filter z axis
     passthrough = cloud_filtered.make_passthrough_filter()
     filter_axis = 'z'
     passthrough.set_filter_field_name(filter_axis)
     axis_min = 0.6
-    axis_max = 1.5
+    axis_max = 1.3
+    passthrough.set_filter_limits(axis_min, axis_max)
+    cloud_filtered = passthrough.filter()
+
+    # TODO: PassThrough Filter y axis
+    passthrough = cloud_filtered.make_passthrough_filter()
+    filter_axis = 'y'
+    passthrough.set_filter_field_name(filter_axis)
+    axis_min = -0.4
+    axis_max = 0.4
     passthrough.set_filter_limits(axis_min, axis_max)
     cloud_filtered = passthrough.filter()
 
@@ -177,7 +186,6 @@ def pcl_callback(pcl_msg):
     # Could add some logic to determine whether or not your object detections are robust
     # before calling pr2_mover()
     try:
-        #not sure which I should call #pr2_mover(detected_objects_list)
         pr2_mover(detected_objects)
     except rospy.ROSInterruptException:
         pass
