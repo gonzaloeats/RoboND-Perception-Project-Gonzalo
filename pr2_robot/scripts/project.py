@@ -106,8 +106,8 @@ def pcl_callback(pcl_msg):
     ec = white_cloud.make_EuclideanClusterExtraction()
     # Set tolerances for distance threshold
     # as well as minimum and maximum cluster size (in points)
-    ec.set_ClusterTolerance(0.05)
-    ec.set_MinClusterSize(90)
+    ec.set_ClusterTolerance(0.02)
+    ec.set_MinClusterSize(20)
     ec.set_MaxClusterSize(2700)
     # Search the k-d tree for clusters
     ec.set_SearchMethod(tree)
@@ -121,7 +121,6 @@ def pcl_callback(pcl_msg):
     color_cluster_point_list = []
     detected_objects_labels = []
     detected_objects = []
-    color_cluster_point_list = []
 
 
     # Classify the clusters! (loop through each detected cluster one at a time)
@@ -203,7 +202,7 @@ def pr2_mover(object_list):
 
     # Parse parameters into individual variables
     for p in object_list_param:
-        object_name = p['name'] 
+        object_name = p['name']
         object_group = p['group']
 
 
@@ -215,7 +214,7 @@ def pr2_mover(object_list):
 
             # set ros type and assign scene number
             ros_scene_num = Int32()
-            test_num=1
+            test_num = 3
             ros_scene_num.data = test_num
 
 
