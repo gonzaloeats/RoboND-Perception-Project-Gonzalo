@@ -74,7 +74,7 @@ def pcl_callback(pcl_msg):
     passthrough_z = cloud_filtered.make_passthrough_filter()
     filter_axis_z  = 'z'
     passthrough_z .set_filter_field_name(filter_axis_z)
-    axis_min_z  = 0.6
+    axis_min_z  = 0.61
     axis_max_z  = 1.3
     passthrough_z .set_filter_limits(axis_min_z, axis_max_z)
     cloud_filtered = passthrough_z .filter()
@@ -92,7 +92,7 @@ def pcl_callback(pcl_msg):
     seg = cloud_filtered.make_segmenter()
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
-    max_distance = 0.02
+    max_distance = 0.01
     seg.set_distance_threshold(max_distance)
     inliers, coefficients = seg.segment()
     # Extract inliers and outliers
@@ -121,26 +121,7 @@ def pcl_callback(pcl_msg):
     color_cluster_point_list = []
     detected_objects_labels = []
     detected_objects = []
-
-    for j, indices in enumerate(cluster_indices):
-        for i, indice in enumerate(indices):
-            color_cluster_point_list.append([white_cloud[indice][0],
-                                            white_cloud[indice][1],
-                                            white_cloud[indice][2],
-                                             rgb_to_float(cluster_color[j])])
-
-    #Create new cloud containing all clusters, each with unique color
-    cluster_cloud = pcl.PointCloud_PointXYZRGB()
-    cluster_cloud.from_list(color_cluster_point_list)
-    # Convert PCL data to ROS messages
-    ros_cloud_objects = pcl_to_ros(cloud_objects)
-    ros_cloud_table = pcl_to_ros(cloud_table)
-    ros_cluster_cloud = pcl_to_ros(cluster_cloud)
-
-    # Publish ROS messages
-    pcl_objects_pub.publish(ros_cloud_objects)
-    pcl_table_pub.publish(ros_cloud_table)
-    pcl_cluster_pub.publish(ros_cluster_cloud)
+    color_cluster_point_list = []
 
 
     # Classify the clusters! (loop through each detected cluster one at a time)
@@ -150,6 +131,26 @@ def pcl_callback(pcl_msg):
         # convert the cluster from pcl to ROS using helper function
         ros_cluster = pcl_to_ros(pcl_cluster)
         histogram_bins = 128
+
+        for j, indices in enumerate(cluster_indices):
+            for i, indice in enumerate(indices):
+                color_cluster_point_list.append([white_cloud[indice][0],
+                                                white_cloud[indice][1],
+                                                white_cloud[indice][2],
+                                                 rgb_to_float(cluster_color[j])])
+
+        #Create new cloud containing all clusters, each with unique color
+        cluster_cloud = pcl.PointCloud_PointXYZRGB()
+        cluster_cloud.from_list(color_cluster_point_list)
+        # Convert PCL data to ROS messages
+        ros_cloud_objects = pcl_to_ros(cloud_objects)
+        ros_cloud_table = pcl_to_ros(cloud_table)
+        ros_cluster_cloud = pcl_to_ros(cluster_cloud)
+
+        # Publish ROS messages
+        pcl_objects_pub.publish(ros_cloud_objects)
+        pcl_table_pub.publish(ros_cloud_table)
+        pcl_cluster_pub.publish(ros_cluster_cloud)
 
         # Extract histogram features
         # complete this step just as is covered in capture_features.py
