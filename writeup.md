@@ -105,8 +105,9 @@ Here is an image of world two
 And finally I was able to even get the little glue guy hiding behind the book.
 ![cluster world 3](images/img6.png)
 ## Project discussion and future challenges
- It took me a while to understand all the different components of this project. I found it challenging to complete, I was able to finally get my code to run natively. Most of the challenges I faced were with not know which parts of the project I need to do in which order. Going back to the lessons I was finally able to get a proper road map.
+ It took me a while to understand all the different components of this project. I found it challenging to complete, I was able to finally get my code to run natively. Most of the challenges I faced were with not know which parts of the project I need to do in which order. Going back to the lessons I was finally able to get a proper road map. I would also like to thank everyone in the slack community for all their help and support throughout the different bugs I encountered and possibly mad in my own code.
 I did come across a few errors that may have been caused by my GCC compiler on my local installation of Ubuntu. I had to wrap the bool values in some of the CPP code as `static_cast<bool>(left_gripper_group.move());` 
 Excited to move ahead with the future projects.
 
 In the future I would like to continue on the rest of the project by actually implementing the code needed to pick up and place the objects.
+
